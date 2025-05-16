@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import prisma from '@/lib/prisma';
 
 export default async function Home() {
@@ -10,6 +11,7 @@ export default async function Home() {
   return (
     <div>
       <h1>Posts</h1>
+      <Button>Click me</Button>
       <ul>
         {posts.map((post) => (
           <li key={post.id}>

@@ -1,6 +1,10 @@
 import { Button } from '@/components/ui/button';
 import prisma from '@/lib/prisma';
 import Counter from '@/components/Counter';
+//import dynamic from 'next/dynamic';
+
+//const UserForm = dynamic(() => import('@/components/UserForm'), { ssr: false });
+import UserForm from '@/components/UserForm';
 
 export default async function Home() {
   const posts = await prisma.post.findMany({
@@ -15,6 +19,10 @@ export default async function Home() {
 
       <div className="mb-8">
         <Counter />
+      </div>
+
+      <div className="mb-8">
+        <UserForm />
       </div>
 
       <Button className="mb-4">Click me</Button>

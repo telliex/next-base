@@ -16,6 +16,7 @@
 
 ## 命名規範
 
+- javascript: Airbnb React/JSX Style Guide
 - 元件: PascalCase
 - 文件: camelCase
 - ...

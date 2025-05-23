@@ -1,29 +1,28 @@
 'use client';
 import React from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 
-const schema = yup.object({
-  name: yup.string().required('Name is required'),
-  email: yup.string().email('Invalid email').required('Email is required'),
-  age: yup
-    .number()
-    .typeError('Age must be a number')
-    .min(0, 'Age must be at least 0')
-    .nullable()
-    .transform((v, o) => (o === '' ? null : v))
+const formSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Invalid email').min(1, 'Email is required'),
+  age: z
+    .union([z.string().min(1).transform(Number), z.number()])
+    .refine(
+      (val) =>
+        val === undefined ||
+        val === null ||
+        (!isNaN(Number(val)) && Number(val) >= 0),
+      {
+        message: 'Age must be at least 0',
+      }
+    )
     .optional(),
 });
 
-type FormData = yup.InferType<typeof schema>;
-
-type FormData1 = {
-  name: string;
-  email: string;
-  age?: number | null | undefined;
-};
+type FormData = z.infer<typeof formSchema>;
 
 export default function UserForm() {
   const {
@@ -31,8 +30,8 @@ export default function UserForm() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>({
-    resolver: yupResolver(schema),
+  } = useForm({
+    resolver: zodResolver(formSchema),
   });
 
   const onSubmit = (data: FormData) => {
@@ -47,34 +46,40 @@ export default function UserForm() {
       className="space-y-2"
     >
       <div>
-        <label>Name:</label>
+        <label htmlFor="name">Name:</label>
         <input
+          id="name"
           {...register('name')}
-          className="border border-gray-300 rounded-md p-2"
+          className="border border-gray-300 rounded-md p-2 w-full"
+          aria-label="Name"
         />
         {errors.name && (
-          <span className="text-red-500">{errors.name.message}</span>
+          <span className="text-red-500">{errors.name.message as string}</span>
         )}
       </div>
       <div>
-        <label>Email:</label>
+        <label htmlFor="email">Email:</label>
         <input
+          id="email"
           {...register('email')}
-          className="border border-gray-300 rounded-md p-2"
+          className="border border-gray-300 rounded-md p-2 w-full"
+          aria-label="Email"
         />
         {errors.email && (
-          <span className="text-red-500">{errors.email.message}</span>
+          <span className="text-red-500">{errors.email.message as string}</span>
         )}
       </div>
       <div>
-        <label>Age:</label>
+        <label htmlFor="age">Age:</label>
         <input
+          id="age"
           type="number"
           {...register('age')}
-          className="border border-gray-300 rounded-md p-2"
+          className="border border-gray-300 rounded-md p-2 w-full"
+          aria-label="Age"
         />
         {errors.age && (
-          <span className="text-red-500">{errors.age.message}</span>
+          <span className="text-red-500">{errors.age.message as string}</span>
         )}
       </div>
       <Button type="submit">Submit</Button>

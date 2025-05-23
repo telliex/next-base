@@ -11,6 +11,8 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "experimentalDecorators": true, // 啟用裝飾器支持
+    "emitDecoratorMetadata": true,  // 啟用裝飾器元數據
     "jsx": "preserve",
     "incremental": true,
     "plugins": [

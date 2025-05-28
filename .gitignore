@@ -46,3 +46,6 @@ next-env.d.ts
 
 # Large binary files
 *.node
+
+# Cursor IDE
+/.cursor/

@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Prisma binary files
+*.dylib.node
+/src/generated/prisma/
+
+# Large binary files
+*.node
